@@ -1,27 +1,32 @@
-// Smooth Scrolling for Navigation Links
 // Mark that JavaScript is running (used by CSS for the fade-in effect)
 document.documentElement.classList.add('js');
+
 document.addEventListener('DOMContentLoaded', () => {
-  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
   setupThemeToggle();
+  setupSmoothScroll();
   setupProjectSearch();
   setupContactForm();
   setupFadeIn();
+  setupGithubRepos();
+});
+
+/* =========================================================
+   Smooth scrolling for navigation links
+   ========================================================= */
+function setupSmoothScroll() {
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
   navLinks.forEach((link) => {
     link.addEventListener('click', (event) => {
       const targetId = link.getAttribute('href'); // e.g. "#about"
       const targetSection = document.querySelector(targetId);
       if (targetSection) {
         event.preventDefault();
-        targetSection.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-            
-        });
+        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
-});
+}
 
 /* =========================================================
    Dark / light theme toggle saved in localStorage
@@ -162,7 +167,7 @@ function setupContactForm() {
     document.getElementById(`${key}-error`).textContent = '';
   }
 
-   function showStatus(text, type) {
+  function showStatus(text, type) {
     status.className = '';    // reset so the animation can replay
     void status.offsetWidth;  // forces the browser to restart the animation
     status.textContent = text;
@@ -193,4 +198,62 @@ function setupFadeIn() {
   }, { threshold: 0.15 });
 
   sections.forEach((section) => observer.observe(section));
+}
+
+/* =========================================================
+   GitHub API: load and show my latest public repositories
+   ========================================================= */
+async function setupGithubRepos() {
+  const status = document.getElementById('repos-status');
+  const list = document.getElementById('repos-list');
+  const url = 'https://api.github.com/users/SARAH-ALSUWAYBI/repos?sort=updated&per_page=6';
+
+  try {
+    const response = await fetch(url);
+
+    // fetch only throws on network errors, so check the HTTP status too
+    if (!response.ok) {
+      throw new Error(`GitHub responded with status ${response.status}`);
+    }
+
+    const repos = await response.json();
+
+    // No repos: show a friendly empty message
+    if (repos.length === 0) {
+      status.textContent = 'No public repositories yet.';
+      return;
+    }
+
+    status.textContent = ''; // hide "Loading..."
+
+    repos.forEach((repo) => {
+      const card = document.createElement('article');
+      card.className = 'repo-card';
+
+      const title = document.createElement('h3');
+      title.textContent = repo.name;
+
+      const desc = document.createElement('p');
+      desc.textContent = repo.description || 'No description provided.';
+
+      const meta = document.createElement('p');
+      meta.className = 'repo-meta';
+      const updated = new Date(repo.updated_at).toLocaleDateString();
+      meta.textContent = `${repo.language || 'Other'} · Updated ${updated}`;
+
+      const link = document.createElement('a');
+      link.href = repo.html_url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = 'View on GitHub';
+
+      card.append(title, desc, meta, link);
+      list.appendChild(card);
+    });
+  } catch (error) {
+    // User-friendly message instead of a broken section
+    console.error('Could not load repositories:', error);
+    status.textContent = 'Sorry, my GitHub projects could not be loaded right now. Please try again later.';
+    status.classList.add('fail');
+  }
 }

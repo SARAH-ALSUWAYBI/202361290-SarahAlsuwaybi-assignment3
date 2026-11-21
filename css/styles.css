@@ -14,7 +14,7 @@
   --text-muted: #9aa4b2;
   --accent: #9d7bf0;
   --accent-dark: #7c5cd6;
-    --on-accent: #14171c;   /* text color on accent buttons */
+  --on-accent: #14171c; /* text color on accent buttons */
   --error: #f87171;
   --success: #4ade80;
 
@@ -52,7 +52,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3 {
@@ -132,6 +132,7 @@ nav {
 .nav-links a:focus-visible {
   color: var(--accent);
 }
+
 /* Theme toggle button */
 .theme-toggle {
   align-self: center;
@@ -177,34 +178,40 @@ nav {
 }
 
 /* =========================================================
-   Projects
+   Projects + GitHub repos (they share the same card style)
    ========================================================= */
 #projects h2,
+#github h2,
 #contact h2 {
   font-size: 1.75rem;
   margin-bottom: 1.5rem;
 }
+
 /* Search box */
 .search-box {
   margin-bottom: 1.5rem;
   max-width: 420px;
 }
-.project-grid {
+
+.project-grid,
+.repos-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
-.project-card {
+.project-card,
+.repo-card {
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   padding: 1.25rem;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.project-card:hover {
+.project-card:hover,
+.repo-card:hover {
   transform: translateY(-4px);
   border-color: var(--accent);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
@@ -218,13 +225,25 @@ nav {
 .project-card h3 {
   font-size: 1.15rem;
 }
+
+/* GitHub repo cards */
+.repo-card h3 {
+  font-size: 1.05rem;
+  word-break: break-word; /* long repo names wrap instead of overflowing */
+}
+
+.repo-meta {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 /* Empty state message for search */
 .empty-state {
   text-align: center;
   padding: 2rem 1rem;
   border: 1px dashed var(--border);
   border-radius: var(--radius);
-    animation: fadeSlide 0.4s ease;
+  animation: fadeSlide 0.4s ease;
 }
 
 /* =========================================================
@@ -293,16 +312,15 @@ button {
   font-size: 0.95rem;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
-
 }
 
 button:hover,
 button:focus-visible {
   background-color: var(--accent-dark);
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
-/* Form status message (success / error) */
+/* Status messages (form + GitHub repos) */
 #form-status {
   font-size: 0.9rem;
   margin-top: 1rem;
@@ -310,12 +328,13 @@ button:focus-visible {
 
 #form-status.success {
   color: var(--success);
-    animation: fadeSlide 0.4s ease;
+  animation: fadeSlide 0.4s ease;
 }
 
-#form-status.fail {
+#form-status.fail,
+#repos-status.fail {
   color: var(--error);
-    animation: fadeSlide 0.4s ease;
+  animation: fadeSlide 0.4s ease;
 }
 
 /* =========================================================
@@ -390,7 +409,8 @@ footer p {
     align-items: flex-start;
   }
 
-  .project-grid {
+  .project-grid,
+  .repos-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
