@@ -4,7 +4,7 @@ document.documentElement.classList.add('js');
 document.addEventListener('DOMContentLoaded', () => {
   setupThemeToggle();
   setupSmoothScroll();
-  setupProjectSearch();
+  setupProjectControls();
   setupContactForm();
   setupFadeIn();
   setupGithubRepos();
@@ -66,28 +66,52 @@ function setupThemeToggle() {
 }
 
 /* =========================================================
-   Live project search (dynamic content + empty state)
+   Projects: search + filter by type + sort (work together)
    ========================================================= */
-function setupProjectSearch() {
+function setupProjectControls() {
   const searchInput = document.getElementById('project-search');
-  const cards = document.querySelectorAll('.project-card');
+  const filterSelect = document.getElementById('project-filter');
+  const sortSelect = document.getElementById('project-sort');
+  const grid = document.querySelector('.project-grid');
   const noResults = document.getElementById('no-results');
+  const cards = Array.from(document.querySelectorAll('.project-card'));
 
-  // Runs every time the user types
-  searchInput.addEventListener('input', () => {
+  // Runs every time any control changes
+  function updateProjects() {
     const query = searchInput.value.trim().toLowerCase();
-    let visibleCount = 0;
+    const type = filterSelect.value;
+    const sortBy = sortSelect.value;
 
+    // Step 1: decide which cards are visible (search AND type must match)
+    let visibleCount = 0;
     cards.forEach((card) => {
-      // Check if the card's text contains what the user typed
-      const matches = card.textContent.toLowerCase().includes(query);
-      card.hidden = !matches;
-      if (matches) visibleCount++;
+      const matchesSearch = card.textContent.toLowerCase().includes(query);
+      const matchesType = type === 'all' || card.dataset.type === type;
+      const show = matchesSearch && matchesType;
+      card.hidden = !show;
+      if (show) visibleCount++;
     });
 
-    // Show "No projects found" only when nothing matches
+    // Step 2: sort the cards and put them back in the new order
+    const sorted = [...cards].sort((a, b) => {
+      if (sortBy === 'az') {
+        return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
+      }
+      const dateA = new Date(a.dataset.date);
+      const dateB = new Date(b.dataset.date);
+      return sortBy === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+    sorted.forEach((card) => grid.appendChild(card)); // appendChild moves the card to the end
+
+    // Step 3: show the empty message only when nothing matches
     noResults.hidden = visibleCount > 0;
-  });
+  }
+
+  searchInput.addEventListener('input', updateProjects);
+  filterSelect.addEventListener('change', updateProjects);
+  sortSelect.addEventListener('change', updateProjects);
+
+  updateProjects(); // apply the default sort on page load
 }
 
 /* =========================================================

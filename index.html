@@ -42,23 +42,44 @@
     <section id="projects" class="fade-in">
       <h2>Projects</h2>
 
-      <!-- Live search: filters project cards while typing -->
-      <div class="search-box">
-        <label for="project-search">Search projects</label>
-        <input type="search" id="project-search" placeholder="Try &quot;bus&quot;, &quot;Java&quot; or &quot;app&quot;...">
+      <!-- Controls: search + filter by type + sort (they all work together) -->
+      <div class="project-controls">
+        <div class="search-box">
+          <label for="project-search">Search projects</label>
+          <input type="search" id="project-search" placeholder="Try &quot;bus&quot;, &quot;Java&quot; or &quot;app&quot;...">
+        </div>
+
+        <div>
+          <label for="project-filter">Type</label>
+          <select id="project-filter">
+            <option value="all">All projects</option>
+            <option value="mobile">Mobile</option>
+            <option value="java">Java</option>
+            <option value="web">Web</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="project-sort">Sort by</label>
+          <select id="project-sort">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="az">Name (A–Z)</option>
+          </select>
+        </div>
       </div>
 
       <div class="project-grid">
 
         <!-- Project 1: Bus Tracker -->
-        <div class="project-card">
+        <div class="project-card" data-type="mobile" data-date="2025-11-01">
           <h3>Bus Tracker</h3>
           <img src="assets/images/bus.png" alt="Bus Tracker features">
           <p>A prototype for a mobile app that helps students track campus buses in real time, with live maps, delay alerts, and route details.</p>
         </div>
 
         <!-- Project 2: Clinic System -->
-        <div class="project-card">
+        <div class="project-card" data-type="java" data-date="2025-04-15">
           <h3>Clinic System</h3>
           <img src="assets/images/clinic.png" alt="Clinic System features">
           <p>A Java-based clinic management system for handling patients, appointments, and visit logs, built as a team project.</p>
@@ -66,7 +87,7 @@
         </div>
 
       </div>
-      <p id="no-results" class="empty-state" hidden>No projects found. Try a different word.</p>
+      <p id="no-results" class="empty-state" hidden>No projects match your search or filter.</p>
     </section>
 
     <!-- GITHUB REPOS SECTION (loaded from the GitHub API) -->

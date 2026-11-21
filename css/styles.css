@@ -187,9 +187,16 @@ nav {
   margin-bottom: 1.5rem;
 }
 
-/* Search box */
-.search-box {
+/* Search + filter + sort controls (stack on phones, one row on wider screens) */
+.project-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-bottom: 1.5rem;
+}
+
+.search-box {
+  flex: 1 1 240px;
   max-width: 420px;
 }
 
@@ -264,6 +271,7 @@ label {
 }
 
 input,
+select,
 textarea {
   width: 100%;
   padding: 0.7rem 0.9rem;
@@ -282,6 +290,7 @@ textarea.invalid {
 }
 
 input:focus-visible,
+select:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
