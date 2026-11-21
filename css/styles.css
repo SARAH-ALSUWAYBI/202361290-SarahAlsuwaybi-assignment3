@@ -81,6 +81,11 @@ img {
   display: block;
 }
 
+/* Make sure the hidden attribute always wins over display rules */
+[hidden] {
+  display: none !important;
+}
+
 section {
   padding: 4rem 1.5rem;
   max-width: var(--max-width);
@@ -149,6 +154,46 @@ nav {
 }
 
 /* =========================================================
+   Welcome bar (visitor name)
+   ========================================================= */
+.welcome {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.name-row {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 420px;
+}
+
+.name-row button {
+  align-self: stretch;
+}
+
+.greeting {
+  color: var(--text);
+  margin: 0;
+}
+
+/* Small text-style button (Change name, Show / Hide) */
+.link-button {
+  background: none;
+  color: var(--accent);
+  padding: 0.25rem 0.5rem;
+  margin-left: 0.25rem;
+  text-decoration: underline;
+}
+
+.link-button:hover,
+.link-button:focus-visible {
+  background: none;
+  color: var(--accent-dark);
+  transform: none;
+}
+
+/* =========================================================
    About Me
    ========================================================= */
 .about-content {
@@ -185,6 +230,14 @@ nav {
 #contact h2 {
   font-size: 1.75rem;
   margin-bottom: 1.5rem;
+}
+
+/* Heading with a button next to it */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 /* Search + filter + sort controls (stack on phones, one row on wider screens) */
@@ -359,6 +412,10 @@ footer p {
   color: var(--text-muted);
   font-size: 0.85rem;
   margin: 0;
+}
+
+.visit-timer {
+  margin-bottom: 0.5rem;
 }
 
 /* =========================================================

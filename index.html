@@ -25,6 +25,22 @@
 
   <main>
 
+    <!-- WELCOME BAR: asks for the visitor's name and remembers it (localStorage) -->
+    <div class="welcome">
+      <form id="name-form" class="name-form" novalidate hidden>
+        <label for="visitor-name">Hi! What's your name?</label>
+        <div class="name-row">
+          <input type="text" id="visitor-name" maxlength="20" placeholder="Your name">
+          <button type="submit">Save</button>
+        </div>
+        <small class="error" id="visitor-name-error"></small>
+      </form>
+      <p id="greeting" class="greeting" hidden>
+        <span id="greeting-text"></span>
+        <button type="button" id="change-name" class="link-button">Change name</button>
+      </p>
+    </div>
+
     <!-- ABOUT ME SECTION -->
     <section id="about" class="fade-in">
       <div class="about-content">
@@ -92,9 +108,15 @@
 
     <!-- GITHUB REPOS SECTION (loaded from the GitHub API) -->
     <section id="github" class="fade-in">
-      <h2>My GitHub Repositories</h2>
-      <p id="repos-status" role="status">Loading repositories...</p>
-      <div id="repos-list" class="repos-grid"></div>
+      <div class="section-header">
+        <h2>My GitHub Repositories</h2>
+        <!-- Show / hide button: the choice is remembered in localStorage -->
+        <button type="button" id="toggle-repos" class="link-button" aria-controls="repos-content" aria-expanded="true">Hide</button>
+      </div>
+      <div id="repos-content">
+        <p id="repos-status" role="status">Loading repositories...</p>
+        <div id="repos-list" class="repos-grid"></div>
+      </div>
     </section>
 
     <!-- CONTACT SECTION -->
@@ -129,6 +151,8 @@
   </main>
 
   <footer>
+    <!-- Visit timer: updated every second by JavaScript -->
+    <p id="visit-timer" class="visit-timer" aria-live="off"></p>
     <p>&copy; 2026 Sarah Alsuwaybi. All rights reserved.</p>
   </footer>
 

@@ -8,7 +8,40 @@ document.addEventListener('DOMContentLoaded', () => {
   setupContactForm();
   setupFadeIn();
   setupGithubRepos();
+  setupVisitorName();
+  setupSectionToggle();
+  setupVisitTimer();
 });
+
+/* =========================================================
+   Safe localStorage helpers
+   (storage can be blocked, e.g. in some private windows,
+   so every read/write is wrapped in try/catch in one place)
+   ========================================================= */
+function loadSetting(key, fallback) {
+  try {
+    return localStorage.getItem(key) ?? fallback;
+  } catch (error) {
+    console.warn(`Could not read "${key}":`, error);
+    return fallback;
+  }
+}
+
+function saveSetting(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    console.warn(`Could not save "${key}":`, error);
+  }
+}
+
+function removeSetting(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch (error) {
+    console.warn(`Could not remove "${key}":`, error);
+  }
+}
 
 /* =========================================================
    Smooth scrolling for navigation links
@@ -35,25 +68,14 @@ function setupThemeToggle() {
   const toggleBtn = document.getElementById('theme-toggle');
 
   // Load the saved theme (default is dark)
-  let savedTheme = 'dark';
-  try {
-    savedTheme = localStorage.getItem('theme') || 'dark';
-  } catch (error) {
-    console.warn('Could not read saved theme:', error);
-  }
-  applyTheme(savedTheme);
+  applyTheme(loadSetting('theme', 'dark'));
 
   // Switch theme on click and save it
   toggleBtn.addEventListener('click', () => {
     const current = document.documentElement.getAttribute('data-theme');
     const next = current === 'light' ? 'dark' : 'light';
     applyTheme(next);
-
-    try {
-      localStorage.setItem('theme', next);
-    } catch (error) {
-      console.warn('Could not save theme:', error);
-    }
+    saveSetting('theme', next);
   });
 
   // Updates the page colors and the button icon
@@ -280,4 +302,138 @@ async function setupGithubRepos() {
     status.textContent = 'Sorry, my GitHub projects could not be loaded right now. Please try again later.';
     status.classList.add('fail');
   }
+}
+
+/* =========================================================
+   Visitor name: ask once, remember it, greet by time of day
+   ========================================================= */
+function setupVisitorName() {
+  const form = document.getElementById('name-form');
+  const input = document.getElementById('visitor-name');
+  const error = document.getElementById('visitor-name-error');
+  const greeting = document.getElementById('greeting');
+  const greetingText = document.getElementById('greeting-text');
+  const changeBtn = document.getElementById('change-name');
+  const contactName = document.getElementById('name');
+
+  // 2–20 letters and spaces (English or Arabic)
+  const namePattern = /^[A-Za-z؀-ۿ ]{2,20}$/;
+
+  function showGreeting(name) {
+    // Different message depending on the visitor's local time
+    const hour = new Date().getHours();
+    let partOfDay = 'Good evening';
+    if (hour < 12) {
+      partOfDay = 'Good morning';
+    } else if (hour < 18) {
+      partOfDay = 'Good afternoon';
+    }
+
+    greetingText.textContent = `${partOfDay}, ${name}! Welcome to my portfolio.`;
+    greeting.hidden = false;
+    form.hidden = true;
+
+    // Save the visitor some typing in the contact form
+    if (contactName.value.trim() === '') {
+      contactName.value = name;
+    }
+  }
+
+  function showForm() {
+    greeting.hidden = true;
+    form.hidden = false;
+    input.value = '';
+    error.textContent = '';
+    input.classList.remove('invalid');
+  }
+
+  // On load: greet a returning visitor, or ask a new one
+  const savedName = loadSetting('visitorName', '');
+  if (savedName) {
+    showGreeting(savedName);
+  } else {
+    showForm();
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const name = input.value.trim().replace(/\s+/g, ' ');
+
+    if (name === '') {
+      error.textContent = 'Please type your name first.';
+      input.classList.add('invalid');
+      return;
+    }
+    if (!namePattern.test(name)) {
+      error.textContent = 'Use 2–20 letters only (no numbers or symbols).';
+      input.classList.add('invalid');
+      return;
+    }
+
+    saveSetting('visitorName', name);
+    showGreeting(name);
+  });
+
+  // Clear the error as soon as the visitor edits the field
+  input.addEventListener('input', () => {
+    error.textContent = '';
+    input.classList.remove('invalid');
+  });
+
+  // Forget the saved name and ask again
+  changeBtn.addEventListener('click', () => {
+    removeSetting('visitorName');
+    showForm();
+    input.focus();
+  });
+}
+
+/* =========================================================
+   Show / hide the GitHub section (choice is remembered)
+   ========================================================= */
+function setupSectionToggle() {
+  const toggleBtn = document.getElementById('toggle-repos');
+  const content = document.getElementById('repos-content');
+
+  function applyVisibility(isHidden) {
+    content.hidden = isHidden;
+    toggleBtn.textContent = isHidden ? 'Show' : 'Hide';
+    toggleBtn.setAttribute('aria-expanded', String(!isHidden));
+  }
+
+  // localStorage only stores strings, so compare with 'true'
+  applyVisibility(loadSetting('reposHidden', 'false') === 'true');
+
+  toggleBtn.addEventListener('click', () => {
+    const willHide = !content.hidden;
+    applyVisibility(willHide);
+    saveSetting('reposHidden', String(willHide));
+  });
+}
+
+/* =========================================================
+   Visit timer: how long the visitor has been on the page
+   ========================================================= */
+function setupVisitTimer() {
+  const timer = document.getElementById('visit-timer');
+  const startTime = Date.now();
+
+  function updateTimer() {
+    const totalSeconds = Math.floor((Date.now() - startTime) / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = String(totalSeconds % 60).padStart(2, '0'); // 5 -> "05"
+
+    // The message changes the longer the visitor stays
+    let note = '';
+    if (totalSeconds >= 300) {
+      note = ' Thanks for staying so long!';
+    } else if (totalSeconds >= 60) {
+      note = ' Thanks for looking around!';
+    }
+
+    timer.textContent = `You've been here for ${minutes}:${seconds}.${note}`;
+  }
+
+  updateTimer();
+  setInterval(updateTimer, 1000);
 }
