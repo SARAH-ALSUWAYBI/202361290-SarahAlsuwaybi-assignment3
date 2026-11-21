@@ -1,9 +1,4 @@
 /* =========================================================
-   Fonts
-   ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&display=swap');
-
-/* =========================================================
    Tokens
    ========================================================= */
 :root {
@@ -78,6 +73,7 @@ a:focus-visible {
 
 img {
   max-width: 100%;
+  height: auto; /* keeps the ratio when width/height are set in HTML */
   display: block;
 }
 

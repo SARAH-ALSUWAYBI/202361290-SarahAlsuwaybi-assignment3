@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Sarah Alsuwaybi, a software engineering student at KFUPM.">
   <title>Sarah Alsuwaybi | Portfolio</title>
+  <!-- Fonts: preconnect + link (faster than @import inside the CSS file) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&display=swap">
   <link rel="stylesheet" href="css/styles.css">
+  <!-- defer: download the script without blocking the page, run it after HTML is parsed -->
+  <script src="js/script.js" defer></script>
 </head>
 <body>
 
@@ -44,7 +51,7 @@
     <!-- ABOUT ME SECTION -->
     <section id="about" class="fade-in">
       <div class="about-content">
-        <img src="assets/images/profile.png" alt="Profile photo of Sarah Alsuwaybi" class="profile-pic">
+        <img src="assets/images/profile.webp" alt="Profile photo of Sarah Alsuwaybi" class="profile-pic" width="160" height="160">
         <div class="about-text">
           <h1>Hi, I'm Sarah Alsuwaybi</h1>
           <p class="tagline">I'm a junior software engineering student with a growing passion for web development.</p>
@@ -90,14 +97,14 @@
         <!-- Project 1: Bus Tracker -->
         <div class="project-card" data-type="mobile" data-date="2025-11-01">
           <h3>Bus Tracker</h3>
-          <img src="assets/images/bus.png" alt="Bus Tracker features">
+          <img src="assets/images/bus.webp" alt="Bus Tracker features" width="726" height="588" loading="lazy">
           <p>A prototype for a mobile app that helps students track campus buses in real time, with live maps, delay alerts, and route details.</p>
         </div>
 
         <!-- Project 2: Clinic System -->
         <div class="project-card" data-type="java" data-date="2025-04-15">
           <h3>Clinic System</h3>
-          <img src="assets/images/clinic.png" alt="Clinic System features">
+          <img src="assets/images/clinic.webp" alt="Clinic System features" width="880" height="808" loading="lazy">
           <p>A Java-based clinic management system for handling patients, appointments, and visit logs, built as a team project.</p>
           <a href="https://github.com/SARAH-ALSUWAYBI/ICS202--202361290--202356290---202360650.git" target="_blank" rel="noopener noreferrer">View on GitHub</a>
         </div>
@@ -156,6 +163,5 @@
     <p>&copy; 2026 Sarah Alsuwaybi. All rights reserved.</p>
   </footer>
 
-  <script src="js/script.js"></script>
 </body>
 </html>
