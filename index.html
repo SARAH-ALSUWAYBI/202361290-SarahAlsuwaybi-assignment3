@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sarah Alsuwaybi | Portfolio</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- navigation -->
+    <header>
+    <nav>
+      <div class="logo">Sarah Alsuwaybi</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <!-- Theme toggle: switches dark/light and saves the choice in localStorage -->
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light theme">☀️</button>
+    </nav>
+  </header>
+ 
+  <main>
+
+
+    <!-- ABOUT ME SECTION -->
+
+<section id="about" class="fade-in">
+        <div class="about-content">
+        <img src="assets/images/profile.png" alt="Profile photo of Sarah Alsuwaybi" class="profile-pic">
+        <div class="about-text">
+          <h1>Hi, I'm Sarah Alsuwaybi</h1>
+             <p class="tagline">I'm a junior software engineering student with a growing passion for web development.</p>
+
+             <p>I enjoy turning ideas into simple, useful interfaces that people can actually use.</p>
+              <p>This portfolio marks the beginning of that journey, and I'm excited to keep building and learning as I go.</p>
+            </div>
+          </div>
+        </section>
+
+
+          <!--  PROJECTS SECTION  -->
+    <section id="projects" class="fade-in">
+      <h2>Projects</h2>
+      <!-- Live search: filters project cards while typing -->
+<div class="search-box">
+  <label for="project-search">Search projects</label>
+  <input type="search" id="project-search" placeholder="Try &quot;bus&quot;, &quot;Java&quot; or &quot;app&quot;...">
+</div>
+      <div class="project-grid">
+ 
+        <!-- Project 1: Bus Tracker -->
+        <div class="project-card">
+                  <h3>Bus Tracker</h3>
+
+          <img src="assets/images/bus.png" alt="Bus Tracker features">
+          <p>A prototype for a mobile app that helps students track campus buses in real time, with live maps, delay alerts, and route details.</p>
+        </div>
+      
+ 
+        <!-- Project 2: Clinic System -->
+        <div class="project-card">
+                      <h3>Clinic System</h3>
+                      <img src="assets/images/clinic.png" alt="Clinic System features">
+          <p>A Java-based clinic management system for handling patients, appointments, and visit logs, built as a team project.</p>
+          <a href="https://github.com/SARAH-ALSUWAYBI/ICS202--202361290--202356290---202360650.git" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+        </div>
+  
+      </div>
+            <p id="no-results" class="empty-state" hidden>No projects found. Try a different word.</p>
+    </section>
+
+        <!--  CONTACT SECTION  -->
+    <section id="contact" class="fade-in">
+      <!-- novalidate: JavaScript handles validation so we can show custom messages -->
+<form id="contact-form" novalidate>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name">
+    <small class="error" id="name-error"></small>
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email">
+    <small class="error" id="email-error"></small>
+  </div>
+
+  <div class="form-group">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="5"></textarea>
+    <small class="error" id="message-error"></small>
+  </div>
+
+  <button type="submit">Send Message</button>
+</form>
+
+<!-- Success / error feedback after submitting -->
+<p id="form-status" role="status"></p>
+    </section>
+ 
+  </main>
+ 
+  <footer>
+    <p>&copy; 2026 Sarah Alsuwaybi. All rights reserved.</p>
+  </footer>
+ 
+  <script src="js/script.js"></script>
+</body>
+</html>
+
+
+
+        
+
+
